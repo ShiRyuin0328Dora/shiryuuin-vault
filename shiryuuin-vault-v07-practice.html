@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>紫竜院家宝物庫 | 竜の卵デモ v0.7</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#f8ecff;background:#140d25}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#48245f,#140d25 65%);min-height:100vh}
+.wrap{max-width:620px;margin:auto;padding:32px 18px}header{text-align:center;margin:16px 0 32px}
+.eyebrow{font-size:11px;letter-spacing:.25em;color:#dfbb77}h1{font-family:serif;font-size:clamp(29px,7vw,42px);margin:10px 0}
+p{line-height:1.65}.muted{color:#c6b4d6;font-size:13px}
+.card{background:#251838dd;border:1px solid #79558e;border-radius:18px;padding:20px;margin:15px 0;box-shadow:0 8px 28px #0003}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.tag{color:#f1d59b;font-size:12px}
+button{border:1px solid #c59a54;border-radius:12px;background:linear-gradient(120deg,#a77738,#e2bb73);color:#28192c;padding:13px 20px;font-size:15px;font-weight:700;cursor:pointer;width:100%;margin-top:12px}
+button:disabled{opacity:.4;cursor:not-allowed}button.secondary{background:transparent;color:#f1d59b}
+#result{min-height:100px;text-align:center;padding:20px;border-radius:12px;background:#180f29;margin-top:15px}
+#result strong{font-size:25px;display:block;margin:8px}audio{width:100%;margin-top:12px}
+a{color:#f1d59b}.pill{display:inline-block;padding:3px 10px;border:1px solid #8760a3;border-radius:999px;font-size:12px}
+ul{padding-left:20px;line-height:1.9}.notice{font-size:12px;color:#e5c6c6}
+footer{text-align:center;margin:30px 0;color:#b6a1c8;font-size:12px}
+#hatchArea{display:none;text-align:center;padding:18px 8px 8px}
+#eggButton{display:block;width:180px;height:208px;margin:0 auto 12px;padding:0;border:0;background:transparent;position:relative;cursor:pointer;filter:drop-shadow(0 8px 20px #b96aff66)}
+.egg{position:absolute;inset:12px 14px 8px;background:radial-gradient(circle at 35% 28%,#e2baff,#a45bd2 45%,#532376 78%);border:3px solid #dfb8fa;border-radius:52% 52% 48% 48%/60% 60% 40% 40%;box-shadow:inset -12px -14px 20px #2d0b4c88,0 0 25px #b366e088}
+.egg:before{content:"✦";position:absolute;top:37%;left:41%;color:#f5d58f;font-size:36px;text-shadow:0 0 14px #f3dcad}
+.egg:after{content:"";position:absolute;top:16%;left:20%;width:24px;height:40px;border-radius:50%;background:#ffffff55;transform:rotate(28deg)}
+#eggButton.shake{animation:shake .65s ease-in-out 2}#eggButton.crack .egg{background:linear-gradient(115deg,#a45bd2 0 45%,#f6dfb5 46% 48%,#7232a6 49% 100%);animation:flash .7s}
+#eggButton.hatched{animation:pop .45s forwards}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg)}40%{transform:rotate(7deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}}
+@keyframes flash{50%{filter:brightness(2.5)}}@keyframes pop{to{opacity:0;transform:scale(1.6)}}
+#hatchGem{font-size:72px;display:none;animation:appear .7s both;filter:drop-shadow(0 0 16px #d8a3ff)}
+@keyframes appear{from{opacity:0;transform:translateY(25px) scale(.5)}to{opacity:1;transform:translateY(0) scale(1)}}
+#hatchMessage{min-height:24px;color:#f1d59b;font-weight:700}
+#hatchReward{display:none;margin:12px 0;padding:14px;border:1px solid #a579c7;border-radius:12px;background:#180f29}
+#hatchReward strong{display:block;font-size:22px;margin:8px 0}
+#eggButton:focus-visible{outline:3px solid #fff;outline-offset:5px}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style></head>
+<body><main class="wrap">
+<header><div class="eyebrow">SHIRYUUIN FAMILY TREASURY</div><h1>🐉 紫竜院家宝物庫</h1><p class="muted">竜のお嬢様が贈る、秘密の音声収蔵庫</p><span class="pill">🥚 孵化演出デモ v0.7・実際の景品配布なし</span></header>
+<section class="card"><div class="row"><h2>🎁 一般宝物庫</h2><span class="tag">無料・1日1回</span></div><p class="muted">竜の卵から秘宝を生み出そう！</p><div id="freeStatus" class="muted"></div><button id="freeButton">無料ガチャを引く</button><button id="practiceButton" class="secondary" type="button">🥚 孵化演出を練習する（何度でも）</button><p class="muted">練習モードは抽選回数・獲得記録を変更しません。</p>
+<div id="hatchArea" aria-live="polite"><p id="hatchMessage">卵をタップして孵化させよう！</p><button id="eggButton" type="button" aria-label="竜の卵をタップして孵化させる"><span class="egg"></span></button><div id="hatchGem" aria-hidden="true">💎</div><div id="hatchReward"></div></div>
+</section>
+<section class="card"><div class="row"><h2>💎 竜の秘宝庫</h2><span class="tag">特典ガチャ</span></div><p class="muted">N・R・SR・SSR・URの5段階。未所持の景品を優先！</p><p class="notice">🔒 本番用のガチャ券は、サーバーで一度だけ使用できる仕組みを準備中です。現在はまだ券の発行・使用はできません。</p><label for="ticketCode" class="muted">専用リンクに含まれるチケット番号（接続準備中）</label><input id="ticketCode" type="text" placeholder="チケット番号を入力" autocomplete="off" style="width:100%;margin-top:8px;padding:13px;background:#180f29;color:#f8ecff;border:1px solid #79558e;border-radius:12px"/><button id="premiumButton" disabled>🔒 特典ガチャ（準備中）</button><p id="ticketInfo" class="muted">現在は安全な抽選機能の実装待ちです。</p></section>
+<section class="card"><h2>✨ 召喚結果</h2><div id="result" aria-live="polite">宝物庫の扉は閉ざされている……</div></section>
+<section class="card"><h2>📜 獲得した秘宝</h2><p class="muted">収録音声を設定すると、この欄で再生・保存できるようになるぞ。</p><ul id="collection"></ul></section>
+<section class="card"><h2>⚠️ 試作版について</h2><p class="notice">この準備版は無料デモのみ端末内で動作します。端末やブラウザを変えると抽選記録は共有されません。特典ガチャは安全のため停止中です。チケット番号の入力欄は見た目の準備であり、認証・発行・抽選・引換はできません。公開イベントで使う前に、規約・法令の確認とサーバー側の安全な実装が必要です。</p></section>
+<footer>紫竜院家宝物庫 · PREVIEW v0.7</footer></main>
+<script>
+const FREE=[{id:'f1',name:'宝物庫へようこそ',rank:'FREE'},{id:'f2',name:'本日のご挨拶',rank:'FREE'},{id:'f3',name:'竜のお嬢様のひとこと',rank:'FREE'}];
+const PREMIUM=[{id:'n1',rank:'N',name:'ごきげんよう！'},{id:'n2',rank:'N',name:'おやすみなさいませ'},{id:'n3',rank:'N',name:'御姉院シヲン'},{id:'r1',rank:'R',name:'お嬢様の朝のご挨拶'},{id:'r2',rank:'R',name:'竜のお嬢様、素が出る'},{id:'r3',rank:'R',name:'今日もお疲れ様ですわ'},{id:'sr1',rank:'SR',name:'お嬢様の甘やかし'},{id:'sr2',rank:'SR',name:'執事への無茶振り'},{id:'sr3',rank:'SR',name:'竜神の小さな秘密'},{id:'ssr1',rank:'SSR',name:'竜のお嬢様からの特別な祝福'},{id:'ssr2',rank:'SSR',name:'竜神の本気のお叱り'},{id:'ur1',rank:'UR',name:'竜神の至宝・限定ボイス＋個別リクエスト券'}];
+const WEIGHTS=[['N',50],['R',27],['SR',15],['SSR',7],['UR',1]];
+const KEY='shiryuuin-vault-demo-v05';let state;try{state=JSON.parse(localStorage.getItem(KEY))}catch{}if(!state||!Array.isArray(state.owned))state={owned:[],lastFree:''};
+const $=id=>document.getElementById(id);const today=()=>{let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function pick(pool){const unowned=pool.filter(x=>!state.owned.includes(x.id));const choices=unowned.length?unowned:pool;return choices[Math.floor(Math.random()*choices.length)]}
+function render(){let used=state.lastFree===today();$('freeStatus').textContent=used?'本日は抽選済み。また明日！':'本日の無料抽選：あと1回';$('freeButton').disabled=used;let list=$('collection');list.replaceChildren();if(!state.owned.length){let li=document.createElement('li');li.textContent='まだ秘宝はありません';list.append(li)}for(let id of state.owned){let item=FREE.find(x=>x.id===id);if(!item)continue;let li=document.createElement('li');li.textContent=`${item.rank}｜${item.name}`;list.append(li)}}
+function show(item){const result=$('result');result.replaceChildren();let label=document.createElement('div');label.textContent='召喚成功！（無料デモ）';let rank=document.createElement('strong');rank.textContent=item.rank;let name=document.createElement('div');name.textContent=item.name;result.append(label,rank,name)}
+let pending=null,animating=false,practice=false;
+function prepareHatch(item,isPractice){if(animating||pending)return;pending=item;practice=isPractice;if(!isPractice)$('freeButton').disabled=true;$('hatchArea').style.display='block';$('eggButton').style.display='block';$('eggButton').className='';$('eggButton').disabled=false;$('hatchGem').style.display='none';$('hatchReward').style.display='none';$('hatchMessage').textContent=isPractice?'練習モード：卵をタップしよう！（景品は増えません）':'卵をタップして孵化させよう！';$('eggButton').focus()}
+$('freeButton').onclick=()=>{if(state.lastFree===today())return;prepareHatch(pick(FREE),false)};
+$('practiceButton').onclick=()=>{prepareHatch(FREE[Math.floor(Math.random()*FREE.length)],true)};
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+$('eggButton').onclick=async()=>{if(!pending||animating)return;animating=true;const item=pending;pending=null;const wasPractice=practice;if(!wasPractice){state.lastFree=today();if(!state.owned.includes(item.id))state.owned.push(item.id);save();render();}
+const egg=$('eggButton');egg.disabled=true;egg.className='shake';$('hatchMessage').textContent='卵が震えている……！';await wait(1300);egg.className='crack';$('hatchMessage').textContent='ピシッ……！';await wait(700);egg.className='hatched';$('hatchMessage').textContent='秘宝が生まれた！';await wait(450);egg.style.display='none';$('hatchGem').style.display='block';let reward=$('hatchReward');reward.replaceChildren();let title=document.createElement('strong');title.textContent='💜 '+item.name;let note=document.createElement('div');note.textContent=wasPractice?'練習モード｜演出のみ・獲得記録は変わりません':'FREE｜ボイス獲得（デモ・音声未設定）';reward.append(title,note);reward.style.display='block';if(wasPractice){$('result').textContent='孵化練習成功！ 景品は付与されません。'}else{show(item)}animating=false;};
+const token=new URLSearchParams(location.search).get('ticket');if(token){$('ticketCode').value=token;$('ticketInfo').textContent='リンクのチケット番号を受け取りました。ただし、使用・抽選はまだできません。';}
+render();
+</script></body></html>
