@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#140c28">
+<title>紫竜院家宝物庫｜背景デザイン C 見本</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,'Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif}
+*{box-sizing:border-box}body{margin:0;background:#10091f;color:#f8edff}button{font:inherit} .app{max-width:1000px;margin:0 auto;padding:22px 16px 48px}
+.intro{text-align:center;margin:5px auto 22px}.eyebrow{letter-spacing:.22em;font-size:.66rem;color:#efcb87;font-weight:700}.intro h1{font-family:Georgia,'Hiragino Mincho ProN',serif;font-size:clamp(24px,5.1vw,37px);margin:9px 0}.intro p{margin:0;color:#c8b9dc;font-size:14px;line-height:1.8}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:20px auto 16px;max-width:750px}.tab{padding:13px 6px;border:1px solid #77578d;border-radius:12px;background:#251538;color:#e4d3f1;cursor:pointer;transition:.2s}.tab b{display:block;font-size:15px;margin-bottom:2px}.tab small{font-size:11px;opacity:.8}.tab[aria-selected=true]{border-color:#f1d39a;color:#ffebbe;box-shadow:0 0 0 1px #bc945b,0 0 18px #ab70da50;background:#3b2153}.tab:focus-visible,.switch:focus-visible{outline:3px solid #e8cb94;outline-offset:2px}
+.sample{isolation:isolate;position:relative;overflow:hidden;max-width:750px;min-height:570px;margin:auto;border:1px solid #a179a6;border-radius:23px;background:radial-gradient(ellipse 90% 56% at 50% 6%,#623b8b 0,#2b1849 48%,#120b27 95%);box-shadow:0 18px 50px #0008;transition:background .3s}
+.sample::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(115deg,transparent 34%,#9d67c41b 46%,transparent 60%)}
+.sample::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 80%,#a961b817,transparent 65%)}
+.treasury{position:relative;z-index:3;max-width:490px;margin:0 auto;padding:52px 19px 44px;text-align:center}
+.crest{width:58px;height:58px;margin:auto;display:grid;place-items:center;border-radius:50%;border:1px solid #e5c18c9f;background:radial-gradient(circle,#674f86bb,#24103788);box-shadow:0 0 30px #a16eb566;font-size:29px}
+.treasury .overline{font-size:10px;letter-spacing:.28em;color:#f5d7a7;margin:17px 0 7px}.treasury h2{font-family:Georgia,'Hiragino Mincho ProN',serif;font-size:clamp(25px,5.8vw,36px);font-weight:700;letter-spacing:.06em;line-height:1.25;margin:0;color:#fff5e4;text-shadow:0 3px 20px #160824,0 0 12px #e6b4ff44}.treasury .sub{font-size:13px;color:#dcc7ef;margin:12px 0 27px;text-shadow:0 2px 9px #130a1c}
+.panel{padding:23px 19px 20px;border:1px solid #bba0d477;border-radius:16px;background:linear-gradient(140deg,#382149dd,#201431e6);box-shadow:0 9px 27px #09041477, inset 0 1px 0 #f0d6ff20;backdrop-filter:blur(8px)}
+.panel .mini{font-size:11px;color:#dfc58c;margin-bottom:8px;letter-spacing:.12em}.panel h3{font-size:22px;margin:0 0 9px;color:#fff5fa}.panel .copy{font-size:12px;color:#d8cce0;line-height:1.8;margin:0 0 16px}
+.egg{width:86px;height:109px;margin:4px auto 17px;border-radius:50% 50% 46% 46%/55% 55% 45% 45%;background:radial-gradient(ellipse at 32% 27%,#f1d7ff 0,#bb82f0 25%,#7742ae 64%,#421869 100%);box-shadow:inset -9px -10px 22px #30114499, inset 8px 7px 18px #ffffff4c, 0 13px 29px #9a4cc65c;position:relative}
+.egg:before{content:"✦";position:absolute;top:21px;left:30px;color:#fcecb1;font-size:22px;text-shadow:0 0 16px #f6c5fc}
+.cta{border:1px solid #f8dea0;border-radius:12px;background:linear-gradient(100deg,#bd8a3e,#fae0a1 47%,#b47b33);box-shadow:inset 0 1px #fff6d8,0 5px 18px #3a1a16aa;color:#402442;padding:12px 20px;max-width:300px;width:100%;font-weight:800;pointer-events:none}
+.disclaimer{font-size:11px;text-align:center;color:#d2bfdc;margin-top:18px}
+.decor{position:absolute;inset:0;z-index:1;pointer-events:none}.jewel{position:absolute;width:var(--w,42px);height:var(--h,52px);left:var(--x);top:var(--y);transform:rotate(var(--r,0deg));filter:drop-shadow(0 0 12px var(--glow,#a889ff99));opacity:.94;animation:float 7s ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+.jewel .facet{position:absolute;inset:0;clip-path:polygon(50% 0,97% 34%,82% 84%,50% 100%,18% 84%,3% 34%);background:linear-gradient(120deg,#e3e2ff 4%,var(--gem1,#ab77ff) 26%,var(--gem2,#6c2ea1) 58%,#372072 90%);border:1px solid #f5d3ff88}
+.jewel .facet:before{content:"";position:absolute;inset:0;clip-path:polygon(50% 0,50% 100%,3% 34%);background:#f8ebff66}.jewel .facet:after{content:"";position:absolute;inset:0;clip-path:polygon(50% 0,97% 34%,50% 51%);background:#ffffff8c}
+.jewel.gold{--gem1:#ffe79e;--gem2:#a96923;--glow:#f8c577aa}.jewel.blue{--gem1:#a1f4ff;--gem2:#2675c4;--glow:#68cdffbb}.jewel.rose{--gem1:#ffb4e0;--gem2:#b33293;--glow:#fa9edfaa}.jewel.green{--gem1:#adf7db;--gem2:#338b85;--glow:#84f8d9aa}
+.spark{position:absolute;left:var(--x);top:var(--y);font-size:var(--s,18px);color:var(--c,#ffedbf);opacity:var(--op,.7);text-shadow:0 0 11px currentColor,0 0 23px currentColor;animation:twinkle var(--speed,3.4s) ease-in-out infinite;animation-delay:var(--delay,0s)}
+.orb{position:absolute;left:var(--x);top:var(--y);width:var(--s,6px);height:var(--s,6px);border-radius:50%;background:#fff7e5;opacity:.65;box-shadow:0 0 11px 3px #f5d3ffbd,0 0 31px 8px #ba72e788;animation:twinkle var(--speed,5s) ease-in-out infinite;animation-delay:var(--delay,0s)}
+.light{position:absolute;border-radius:50%;filter:blur(45px);pointer-events:none;width:var(--w);height:var(--w);left:var(--x);top:var(--y);background:var(--color,#8b4ef6);opacity:.25;animation:float 8s ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+/* A: gems dominate, few decorative lights. */
+.sample[data-theme=a] .decor.lights{opacity:0}.sample[data-theme=a] .decor.gems{opacity:1}.sample[data-theme=a] .decor.sparks{opacity:.38}
+.sample[data-theme=a]{background:radial-gradient(circle at 40% 12%,#50316e,#21133d 54%,#10091e)}
+/* B: light particles dominate, no gems. */
+.sample[data-theme=b] .decor.gems{opacity:0}.sample[data-theme=b] .decor.lights,.sample[data-theme=b] .decor.sparks{opacity:1}
+.sample[data-theme=b]{background:radial-gradient(ellipse at 51% 22%,#523394 0,#281d59 38%,#0b122c 100%)}
+/* C: both, softened enough to keep labels readable. */
+.sample[data-theme=c] .decor.gems{opacity:.88}.sample[data-theme=c] .decor.lights,.sample[data-theme=c] .decor.sparks{opacity:.92}
+.sample[data-theme=c]{background:radial-gradient(ellipse at 50% 10%,#6a3887 0,#2d174d 43%,#120c2c 100%)}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.2)}}@keyframes float{0%{translate:0 -8px}100%{translate:0 10px}}
+.bottom{max-width:750px;margin:16px auto 0;border:1px solid #563e70;background:#211430;border-radius:15px;padding:17px 19px;line-height:1.9;color:#dfd0e9;font-size:13px}.bottom strong{color:#f8df9f}.bottom p{margin:0}.bottom .note{color:#bfaac9;font-size:12px;margin-top:8px}
+@media(max-width:520px){.app{padding:17px 10px 35px}.tabs{gap:6px}.tab{padding:11px 2px}.tab b{font-size:14px}.tab small{font-size:10px}.sample{min-height:550px}.treasury{padding:55px 31px 36px}.panel{padding:21px 15px}.jewel{scale:.75}.jewel[style*='--x: 7%'],.jewel[style*='--x: 88%']{scale:.65}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body><main class="app">
+ <header class="intro"><div class="eyebrow">DESIGN PREVIEW · NOT THE REAL GACHA</div><h1>💎 宝物庫の背景デザイン見本</h1><p>Cタイプの見本だよ！<br>実際のガチャ抽選は行われません。</p></header>
+ <section class="sample" id="sample" data-theme="c" role="tabpanel" >
+  <div class="decor lights" aria-hidden="true">
+   <i class="light" style="--x:-5%;--y:2%;--w:270px;--color:#b76fff"></i><i class="light" style="--x:57%;--y:29%;--w:240px;--color:#53afff;--delay:-3s"></i><i class="light" style="--x:4%;--y:68%;--w:220px;--color:#e078f1;--delay:-5s"></i>
+   <i class="orb" style="--x:13%;--y:18%;--s:7px;--delay:-1s"></i><i class="orb" style="--x:82%;--y:12%;--s:5px;--delay:-3s"></i><i class="orb" style="--x:8%;--y:48%;--s:5px;--delay:-2s"></i><i class="orb" style="--x:92%;--y:44%;--s:6px;--delay:-4s"></i><i class="orb" style="--x:25%;--y:67%;--s:4px;--delay:-2s"></i><i class="orb" style="--x:78%;--y:82%;--s:6px;--delay:-2.6s"></i><i class="orb" style="--x:45%;--y:5%;--s:5px;--delay:-3.2s"></i><i class="orb" style="--x:55%;--y:90%;--s:4px;--delay:-1.2s"></i><i class="orb" style="--x:35%;--y:38%;--s:3px;--delay:-3.2s"></i>
+  </div>
+  <div class="decor gems" aria-hidden="true">
+    <i class="jewel" style="--x:8%;--y:11%;--w:58px;--h:67px;--r:-18deg;--delay:-2s"><i class="facet"></i></i>
+    <i class="jewel blue" style="--x:82%;--y:15%;--w:51px;--h:61px;--r:19deg;--delay:-4s"><i class="facet"></i></i>
+    <i class="jewel gold" style="--x:2%;--y:43%;--w:50px;--h:55px;--r:21deg;--delay:-1s"><i class="facet"></i></i>
+    <i class="jewel rose" style="--x:89%;--y:49%;--w:59px;--h:67px;--r:-12deg;--delay:-3.1s"><i class="facet"></i></i>
+    <i class="jewel green" style="--x:9%;--y:78%;--w:47px;--h:52px;--r:15deg;--delay:-3s"><i class="facet"></i></i>
+    <i class="jewel" style="--x:82%;--y:82%;--w:53px;--h:63px;--r:-23deg;--delay:-5s"><i class="facet"></i></i>
+    <i class="jewel gold" style="--x:61%;--y:2%;--w:32px;--h:41px;--r:19deg;--delay:-3s"><i class="facet"></i></i>
+  </div>
+  <div class="decor sparks" aria-hidden="true">
+   <i class="spark" style="--x:21%;--y:15%;--s:19px;--delay:-1s">✦</i><i class="spark" style="--x:74%;--y:26%;--s:18px;--delay:-2.3s">✧</i><i class="spark" style="--x:14%;--y:62%;--s:26px;--delay:-2s">✧</i><i class="spark" style="--x:78%;--y:71%;--s:23px;--delay:-.5s">✦</i><i class="spark" style="--x:43%;--y:13%;--s:12px;--delay:-3.5s">✧</i><i class="spark" style="--x:39%;--y:89%;--s:15px;--delay:-3s">✦</i><i class="spark" style="--x:58%;--y:8%;--s:10px;--delay:-.8s">✦</i><i class="spark" style="--x:91%;--y:75%;--s:18px;--delay:-2s">✧</i><i class="spark" style="--x:4%;--y:28%;--s:14px;--delay:-1s">✦</i>
+  </div>
+  <div class="treasury">
+    <div class="crest" aria-hidden="true">♛</div>
+    <div class="overline">SHIRYUUIN FAMILY TREASURY</div>
+    <h2>紫竜院家宝物庫</h2>
+    <p class="sub">竜のお嬢様が贈る、秘密の音声収蔵庫</p>
+    <div class="panel">
+      <div class="mini">✦ TREASURE GACHA ✦</div><h3>🥚 一般宝物庫</h3><p class="copy">神秘の卵に眠る秘宝を、そっと呼び覚ましましょう。</p>
+      <div class="egg" aria-hidden="true"></div><button class="cta" type="button" disabled>無料ガチャを引く（見本）</button>
+    </div>
+    <p class="disclaimer">✨ 背景のデザイン比較用サンプル ✨</p>
+  </div>
+ </section>
+ <aside class="bottom"><p><strong>👑 両方のせ！</strong> — 宝石と光を組み合わせた華やかなデザイン。</p><p class="note">※ 宝石は仮の図形です。</p></aside>
+</main></body></html>
