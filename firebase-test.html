@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>紫竜院家宝物庫 Firebase接続テスト</title>
+</head>
+<body>
+  <h1>🐉 Firebase接続テスト</h1>
+  <p id="status">準備中...</p>
+  <button id="testButton" disabled>接続を確認する</button>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getFirestore, getDocs, collection } from
+      "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+    // Firebase ConsoleのConfigから設定値を転記する
+    const firebaseConfig = {
+      apiKey: "AIzaSyDoOXzvQ-0Eg1yOlmzbXjk0ntlZjTtoTKA",
+      authDomain: "shiryuuin-vault.firebaseapp.com",
+      projectId: "shiryuuin-vault",
+      storageBucket: "shiryuuin-vault.firebasestorage.app",
+      messagingSenderId: "410153951418",
+      appId: "1:410153951418:web:e0c8609d0248b87881a283"
+    };
+
+    const status = document.getElementById("status");
+    const button = document.getElementById("testButton");
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      status.textContent = "初期化完了。接続テスト待機中";
+      button.disabled = false;
+
+      button.addEventListener("click", async () => {
+        status.textContent = "Firestoreへ接続中...";
+        try {
+          const snapshot = await getDocs(
+            collection(db, "gachaTickets")
+          );
+          status.textContent =
+            "接続成功！取得件数：" + snapshot.size;
+        } catch (error) {
+          status.textContent =
+            "接続エラー：" + error.code;
+        }
+      });
+    } catch (error) {
+      status.textContent =
+        "初期化エラー：" + error.message;
+    }
+  </script>
+</body>
+</html>
