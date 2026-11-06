@@ -37,13 +37,11 @@
       button.disabled = false;
 
       button.addEventListener("click", async () => {
-        status.textContent = "Firestoreへ接続中...";
+        status.textContent = "Firebaseの初期化を確認中...";
         try {
-          const snapshot = await getDocs(
-            collection(db, "gachaTickets")
-          );
-          status.textContent =
-            "接続成功！取得件数：" + snapshot.size;
+          
+status.textContent = "Firebase初期化OK！Firestoreの読み取りは行っていません。";
+  
         } catch (error) {
           status.textContent =
             "接続エラー：" + error.code;
