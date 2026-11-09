@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>紫竜院家宝物庫 | 竜の卵デモ v0.9.5.1 修正確認版｜デザインC</title>
+<title>紫竜院家宝物庫 | 竜の卵デモ v0.9.6 音声付き無料デモ｜デザインC</title>
 <style>
 :root{font-family:system-ui,-apple-system,sans-serif;color:#f8ecff;background:#140d25}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#48245f,#140d25 65%);min-height:100vh}
@@ -144,18 +144,19 @@ button:disabled{box-shadow:none}
   <div class="decor sparks" aria-hidden="true">
    <i class="spark" style="--x:21%;--y:15%;--s:19px;--delay:-1s">✦</i><i class="spark" style="--x:74%;--y:26%;--s:18px;--delay:-2.3s">✧</i><i class="spark" style="--x:14%;--y:62%;--s:26px;--delay:-2s">✧</i><i class="spark" style="--x:78%;--y:71%;--s:23px;--delay:-.5s">✦</i><i class="spark" style="--x:43%;--y:13%;--s:12px;--delay:-3.5s">✧</i><i class="spark" style="--x:39%;--y:89%;--s:15px;--delay:-3s">✦</i><i class="spark" style="--x:58%;--y:8%;--s:10px;--delay:-.8s">✦</i><i class="spark" style="--x:91%;--y:75%;--s:18px;--delay:-2s">✧</i><i class="spark" style="--x:4%;--y:28%;--s:14px;--delay:-1s">✦</i>
   </div>
-<header><div class="eyebrow">SHIRYUUIN FAMILY TREASURY</div><h1>🐉 紫竜院家宝物庫</h1><p class="muted">竜のお嬢様が贈る、秘密の音声収蔵庫</p><span class="pill">🥚 ランダム孵化デモ v0.9.5.1・実際の景品配布なし</span></header>
+<header><div class="eyebrow">SHIRYUUIN FAMILY TREASURY</div><h1>🐉 紫竜院家宝物庫</h1><p class="muted">竜のお嬢様が贈る、秘密の音声収蔵庫</p><span class="pill">🥚 ランダム孵化デモ v0.9.6・音声付き無料デモ</span></header>
 <section class="card"><div class="mobile-gems" aria-hidden="true"><i class="jewel gold"><i class="facet"></i></i><i class="jewel blue"><i class="facet"></i></i><i class="jewel rose"><i class="facet"></i></i><i class="spark">✦</i></div><div class="row"><h2>🎁 一般宝物庫</h2><span class="tag">無料・1日1回</span></div><p class="muted">竜の卵から秘宝を生み出そう！</p><div id="freeStatus" class="muted">本日の抽選状況を読み込み中…</div><button id="freeButton" disabled>無料ガチャを引く</button><p id="storageMessage" class="notice" role="status"></p><button id="retryStorage" class="secondary" type="button" hidden>保存を再確認する</button><button id="practiceButton" class="secondary" type="button">🥚 孵化演出を練習する（何度でも）</button><p class="muted">練習モードは抽選回数・獲得記録を変更しません。</p>
 <div id="hatchArea" aria-live="polite"><p id="hatchMessage">卵をタップして孵化させよう！</p><button id="eggButton" type="button" aria-label="竜の卵をタップして孵化させる"><span class="egg-v07" aria-hidden="true"></span><span class="egg-shell"><span class="egg-half egg-bottom"></span><span class="egg-half egg-top"></span><span class="egg-mark">✦</span><span class="egg-shine"></span></span></button><div id="hatchGem" aria-hidden="true">💎</div><div id="hatchReward"></div></div>
 </section>
 <section class="card"><div class="mobile-gems" aria-hidden="true"><i class="jewel gold"><i class="facet"></i></i><i class="jewel blue"><i class="facet"></i></i><i class="jewel rose"><i class="facet"></i></i><i class="spark">✦</i></div><div class="row"><h2>💎 竜の秘宝庫</h2><span class="tag">特典ガチャ</span></div><p class="muted">N・R・SR・SSR・URの5段階。未所持の景品を優先！</p><p class="notice">🔒 本番用のガチャ券は、サーバーで一度だけ使用できる仕組みを準備中です。現在はまだ券の発行・使用はできません。</p><label for="ticketCode" class="muted">専用リンクに含まれるチケット番号（接続準備中）</label><input id="ticketCode" type="text" placeholder="チケット番号を入力" autocomplete="off" style="width:100%;margin-top:8px;padding:13px;background:#180f29;color:#f8ecff;border:1px solid #79558e;border-radius:12px"/><button id="premiumButton" disabled>🔒 特典ガチャ（準備中）</button><p id="ticketInfo" class="muted">現在は安全な抽選機能の実装待ちです。</p></section>
 <section class="card"><h2>✨ 召喚結果</h2><div id="result" aria-live="polite">宝物庫の扉は閉ざされている……</div></section>
-<section class="card"><h2>📜 獲得した秘宝</h2><p class="muted">収録音声を設定すると、この欄で再生・保存できるようになるぞ。</p><ul id="collection"></ul></section>
-<section class="card"><h2>⚠️ 試作版について</h2><p class="notice">この準備版は無料デモのみ端末内で動作します。端末やブラウザを変えると抽選記録は共有されません。特典ガチャは安全のため停止中です。チケット番号の入力欄は見た目の準備であり、認証・発行・抽選・引換はできません。公開イベントで使う前に、規約・法令の確認とサーバー側の安全な実装が必要です。</p></section>
-<footer>紫竜院家宝物庫 · PREVIEW v0.9.5.1 · DESIGN C · MOBILE JEWELS</footer></main>
+<section class="card"><h2>📜 獲得した秘宝</h2><p class="muted">無料ガチャの音声3種類を再生・保存できます。</p><ul id="collection"></ul></section>
+<section class="card"><h2>⚠️ 試作版について</h2><p class="notice">この準備版は無料デモのみ端末内で動作します。音声ファイルはURLを知る人が直接アクセスできます。端末やブラウザを変えると抽選記録は共有されません。特典ガチャは安全のため停止中です。チケット番号の入力欄は見た目の準備であり、認証・発行・抽選・引換はできません。公開イベントで使う前に、規約・法令の確認とサーバー側の安全な実装が必要です。</p></section>
+<footer>紫竜院家宝物庫 · v0.9.6 · DESIGN C · MOBILE JEWELS</footer></main>
 <script>
 const FREE=[{id:'f1',name:'宝物庫へようこそ',rank:'FREE'},{id:'f2',name:'本日のご挨拶',rank:'FREE'},{id:'f3',name:'竜のお嬢様のひとこと',rank:'FREE'}];
 const PREMIUM=[{id:'n1',rank:'N',name:'ごきげんよう！'},{id:'n2',rank:'N',name:'おやすみなさいませ'},{id:'n3',rank:'N',name:'御姉院シヲン'},{id:'r1',rank:'R',name:'お嬢様の朝のご挨拶'},{id:'r2',rank:'R',name:'竜のお嬢様、素が出る'},{id:'r3',rank:'R',name:'今日もお疲れ様ですわ'},{id:'sr1',rank:'SR',name:'お嬢様の甘やかし'},{id:'sr2',rank:'SR',name:'執事への無茶振り'},{id:'sr3',rank:'SR',name:'竜神の小さな秘密'},{id:'ssr1',rank:'SSR',name:'竜のお嬢様からの特別な祝福'},{id:'ssr2',rank:'SSR',name:'竜神の本気のお叱り'},{id:'ur1',rank:'UR',name:'竜神の至宝・限定ボイス＋個別リクエスト券'}];
+const VOICES={f1:'welcome.mp3',f2:'greeting.mp3',f3:'oneword.mp3'};
 const WEIGHTS=[['N',50],['R',27],['SR',15],['SSR',7],['UR',1]];
 const KEY='shiryuuin-vault-demo-v05';
 const $=id=>document.getElementById(id);
@@ -221,18 +222,27 @@ function refreshFreeStatus(){
   $('freeStatus').textContent=!storageReady?'抽選記録を確認してください':used?'本日は抽選済み。また明日！':'本日の無料抽選：あと1回';
   $('freeButton').disabled=!storageReady||used||pending!==null||animating;
 }
+function voiceControls(item){
+  const src=VOICES[item.id];if(!src)return null;
+  const box=document.createElement('div');
+  const player=document.createElement('audio');player.controls=true;player.preload='none';player.src=src;
+  player.setAttribute('aria-label',item.name+' の音声');
+  const link=document.createElement('a');link.href=src;link.download='shiryuuin-'+item.id+'.mp3';link.textContent='音声を保存';
+  box.append(player,link);return box;
+}
 function render(){
   refreshFreeStatus();
   const list=$('collection');list.replaceChildren();
   if(!state.owned.length){const li=document.createElement('li');li.textContent='まだ秘宝はありません';list.append(li);}
-  for(const id of state.owned){const item=FREE.find(x=>x.id===id);if(!item)continue;const li=document.createElement('li');li.textContent=item.rank+'｜'+item.name;list.append(li);}
+  for(const id of state.owned){const item=FREE.find(x=>x.id===id);if(!item)continue;const li=document.createElement('li');li.textContent=item.rank+'｜'+item.name;const voice=voiceControls(item);if(voice)li.append(voice);list.append(li);}
 }
 async function syncState(){
   const sequence=++syncSequence,revision=stateRevision;
   try{
     const loaded=await savedState();
     if(sequence!==syncSequence||revision!==stateRevision)return;
-    state=loaded.state;storageReady=true;clearStorageError();render();
+    const changed=!storageReady||state.lastFree!==loaded.state.lastFree||state.owned.length!==loaded.state.owned.length||state.owned.some((id,i)=>id!==loaded.state.owned[i]);
+    state=loaded.state;storageReady=true;clearStorageError();if(changed)render();else refreshFreeStatus();
   }catch(error){
     if(sequence!==syncSequence||revision!==stateRevision)return;
     storageReady=false;storageError();refreshFreeStatus();
@@ -305,8 +315,8 @@ $('eggButton').onclick=async()=>{
     $('hatchGem').style.display='block';await wait(hatchStyle==='v07'?700:1000);
     const reward=$('hatchReward');reward.replaceChildren();
     const title=document.createElement('strong');title.textContent='💜 '+item.name;
-    const note=document.createElement('div');note.textContent=wasPractice?'練習モード｜演出のみ・獲得記録は変わりません':'FREE｜ボイス獲得（デモ・音声未設定）';
-    reward.append(title,note);reward.style.display='block';
+    const note=document.createElement('div');note.textContent=wasPractice?'練習モード｜演出のみ・獲得記録は変わりません':'FREE｜ボイス獲得（無料デモ）';
+    reward.append(title,note);if(!wasPractice){const voice=voiceControls(item);if(voice)reward.append(voice);}reward.style.display='block';
     if(wasPractice)$('result').textContent='孵化練習成功！ 景品は付与されません。';else show(item);
   }finally{animating=false;refreshFreeStatus();}
 };
