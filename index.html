@@ -16,6 +16,8 @@ button:disabled{opacity:.4;cursor:not-allowed}button.secondary{background:transp
 #result{min-height:100px;text-align:center;padding:20px;border-radius:12px;background:#180f29;margin-top:15px}
 #result strong{font-size:25px;display:block;margin:8px}audio{width:100%;margin-top:12px}
 a{color:#f1d59b}.pill{display:inline-block;padding:3px 10px;border:1px solid #8760a3;border-radius:999px;font-size:12px}
+.home-link{display:inline-block;margin-top:16px;padding:8px 12px;border:1px solid #c6a6d6;border-radius:999px;color:#fff5e4;text-decoration:none;font-size:14px}
+.home-link:focus-visible{outline:3px solid #fff;outline-offset:3px}
 ul{padding-left:20px;line-height:1.9}.notice{font-size:12px;color:#e5c6c6}
 footer{text-align:center;margin:30px 0;color:#b6a1c8;font-size:12px}
 #hatchArea{display:none;text-align:center;padding:18px 8px 8px}
@@ -144,7 +146,7 @@ button:disabled{box-shadow:none}
   <div class="decor sparks" aria-hidden="true">
    <i class="spark" style="--x:21%;--y:15%;--s:19px;--delay:-1s">✦</i><i class="spark" style="--x:74%;--y:26%;--s:18px;--delay:-2.3s">✧</i><i class="spark" style="--x:14%;--y:62%;--s:26px;--delay:-2s">✧</i><i class="spark" style="--x:78%;--y:71%;--s:23px;--delay:-.5s">✦</i><i class="spark" style="--x:43%;--y:13%;--s:12px;--delay:-3.5s">✧</i><i class="spark" style="--x:39%;--y:89%;--s:15px;--delay:-3s">✦</i><i class="spark" style="--x:58%;--y:8%;--s:10px;--delay:-.8s">✦</i><i class="spark" style="--x:91%;--y:75%;--s:18px;--delay:-2s">✧</i><i class="spark" style="--x:4%;--y:28%;--s:14px;--delay:-1s">✦</i>
   </div>
-<header><div class="eyebrow">SHIRYUUIN FAMILY TREASURY</div><h1>🐉 紫竜院家宝物庫</h1><p class="muted">竜のお嬢様が贈る、秘密の音声収蔵庫</p><span class="pill">🥚 ランダム孵化デモ v0.9.6・音声付き無料デモ</span></header>
+<header><div class="eyebrow">SHIRYUUIN FAMILY TREASURY</div><h1>🐉 紫竜院家宝物庫</h1><p class="muted">竜のお嬢様が贈る、秘密の音声収蔵庫</p><span class="pill">🥚 ランダム孵化デモ v0.9.6・音声付き無料デモ</span><br><a class="home-link" href="./home-gem-top.html">← ホームページに戻る</a></header>
 <section class="card"><div class="mobile-gems" aria-hidden="true"><i class="jewel gold"><i class="facet"></i></i><i class="jewel blue"><i class="facet"></i></i><i class="jewel rose"><i class="facet"></i></i><i class="spark">✦</i></div><div class="row"><h2>🎁 一般宝物庫</h2><span class="tag">無料・1日1回</span></div><p class="muted">竜の卵から秘宝を生み出そう！</p><div id="freeStatus" class="muted">本日の抽選状況を読み込み中…</div><button id="freeButton" disabled>無料ガチャを引く</button><p id="storageMessage" class="notice" role="status"></p><button id="retryStorage" class="secondary" type="button" hidden>保存を再確認する</button><button id="practiceButton" class="secondary" type="button">🥚 孵化演出を練習する（何度でも）</button><p class="muted">練習モードは抽選回数・獲得記録を変更しません。</p>
 <div id="hatchArea" aria-live="polite"><p id="hatchMessage">卵をタップして孵化させよう！</p><button id="eggButton" type="button" aria-label="竜の卵をタップして孵化させる"><span class="egg-v07" aria-hidden="true"></span><span class="egg-shell"><span class="egg-half egg-bottom"></span><span class="egg-half egg-top"></span><span class="egg-mark">✦</span><span class="egg-shine"></span></span></button><div id="hatchGem" aria-hidden="true">💎</div><div id="hatchReward"></div></div>
 </section>
