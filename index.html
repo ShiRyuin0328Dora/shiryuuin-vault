@@ -21,6 +21,17 @@ a{color:#f1d59b}.pill{display:inline-block;padding:3px 10px;border:1px solid #87
 ul{padding-left:20px;line-height:1.9}.notice{font-size:12px;color:#e5c6c6}
 .collection-progress{margin:12px 0 18px;color:#f1d59b;font-weight:700}
 .collection-progress progress{display:block;width:100%;height:12px;margin-top:8px;accent-color:#c690ef}
+#collection{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+#collection .relic-card{position:relative;overflow:hidden;padding:18px;border:1px solid #b38bd599;border-radius:18px;background:radial-gradient(circle at 88% 7%,#965cbd36,transparent 45%),linear-gradient(135deg,#38234fec,#1a102ded);box-shadow:inset 0 1px #f6dfff30,0 8px 18px #09041455}
+#collection .relic-card::after{content:'✦';position:absolute;right:15px;top:6px;color:#d6a7f536;font-size:64px;pointer-events:none}
+#collection .relic-card.catalog-locked{border-color:#87699888;background:linear-gradient(135deg,#342546c9,#1b142bdb)}
+.relic-head{display:flex;align-items:center;gap:15px;position:relative;z-index:1}
+.relic-emblem{display:grid;place-items:center;flex:none;width:54px;height:54px;border:1px solid #e3b9ff99;border-radius:15px;background:radial-gradient(circle at 32% 25%,#f9e8ff,#b675e5 38%,#58317f 78%);color:#fff2ff;font-size:32px;box-shadow:0 0 22px #b96aff55}
+.catalog-locked .relic-emblem{background:linear-gradient(135deg,#655073,#30253e);border-color:#9882a488;box-shadow:none;color:#dccce4}
+.relic-meta{min-width:0;flex:1}.relic-number{display:block;color:#dabbeb;font-size:11px;letter-spacing:.16em}.relic-title{margin:4px 0;font-size:clamp(17px,4.7vw,21px);line-height:1.4}.relic-state{display:inline-block;margin-top:4px;padding:3px 9px;border-radius:999px;background:#8856a888;color:#fff0d4;font-size:11px}
+.catalog-locked .relic-title{color:#ddd0e5}.catalog-locked .relic-state{background:#6b5a7788;color:#e1d2e9}
+.relic-hint{margin:13px 0 0;color:#c6b4d6;font-size:12px}
+#collection .relic-card audio{margin-top:16px}
 footer{text-align:center;margin:30px 0;color:#b6a1c8;font-size:12px}
 #hatchArea{display:none;text-align:center;padding:18px 8px 8px}
 #eggButton{display:block;width:190px;height:210px;margin:0 auto 12px;padding:0;border:0;background:transparent;position:relative;cursor:pointer;filter:drop-shadow(0 8px 20px #b96aff66)}
@@ -154,7 +165,7 @@ button:disabled{box-shadow:none}
 </section>
 <section class="card"><div class="mobile-gems" aria-hidden="true"><i class="jewel gold"><i class="facet"></i></i><i class="jewel blue"><i class="facet"></i></i><i class="jewel rose"><i class="facet"></i></i><i class="spark">✦</i></div><div class="row"><h2>💎 竜の秘宝庫</h2><span class="tag">特典ガチャ</span></div><p class="muted">N・R・SR・SSR・URの5段階。未所持の景品を優先！</p><p class="notice">🔒 本番用のガチャ券は、サーバーで一度だけ使用できる仕組みを準備中です。現在はまだ券の発行・使用はできません。</p><label for="ticketCode" class="muted">専用リンクに含まれるチケット番号（接続準備中）</label><input id="ticketCode" type="text" placeholder="チケット番号を入力" autocomplete="off" style="width:100%;margin-top:8px;padding:13px;background:#180f29;color:#f8ecff;border:1px solid #79558e;border-radius:12px"/><button id="premiumButton" disabled>🔒 特典ガチャ（準備中）</button><p id="ticketInfo" class="muted">現在は安全な抽選機能の実装待ちです。</p></section>
 <section class="card"><h2>✨ 召喚結果</h2><div id="result" aria-live="polite">宝物庫の扉は閉ざされている……</div></section>
-<section class="card"><h2>📜 獲得した秘宝</h2><p class="muted">無料ガチャの音声3種類を再生・保存できます。</p><div class="collection-progress"><span id="collectionCount" role="status">収集状況を読み込み中…</span><progress id="collectionBar" max="3" value="0" aria-label="無料ボイスの収集状況"></progress></div><ul id="collection"></ul></section>
+<section class="card"><h2>📖 秘宝図鑑</h2><p class="muted">竜の卵から出会った音声が、ここに並びます。</p><div class="collection-progress"><span id="collectionCount" role="status">収集状況を読み込み中…</span><progress id="collectionBar" max="3" value="0" aria-label="無料ボイスの収集状況"></progress></div><ul id="collection" aria-label="無料ボイスの図鑑"></ul></section>
 <section class="card"><h2>⚠️ 試作版について</h2><p class="notice">この準備版は無料デモのみ端末内で動作します。音声ファイルはURLを知る人が直接アクセスできます。端末やブラウザを変えると抽選記録は共有されません。特典ガチャは安全のため停止中です。チケット番号の入力欄は見た目の準備であり、認証・発行・抽選・引換はできません。公開イベントで使う前に、規約・法令の確認とサーバー側の安全な実装が必要です。</p></section>
 <footer>紫竜院家宝物庫 · v0.9.6 · DESIGN C · MOBILE JEWELS</footer></main>
 <script>
@@ -240,8 +251,20 @@ function render(){
   $('collectionCount').textContent=`無料ボイス ${collected} / ${FREE.length} 種類`; 
   $('collectionBar').max=FREE.length;$('collectionBar').value=collected;
   const list=$('collection');list.replaceChildren();
-  if(!state.owned.length){const li=document.createElement('li');li.textContent='まだ秘宝はありません';list.append(li);}
-  for(const id of state.owned){const item=FREE.find(x=>x.id===id);if(!item)continue;const li=document.createElement('li');li.textContent=item.rank+'｜'+item.name;const voice=voiceControls(item);if(voice)li.append(voice);list.append(li);}
+  for(const [index,item] of FREE.entries()){
+    const owned=state.owned.includes(item.id);
+    const li=document.createElement('li');li.className='relic-card'+(owned?'':' catalog-locked');
+    const head=document.createElement('div');head.className='relic-head';
+    const emblem=document.createElement('span');emblem.className='relic-emblem';emblem.setAttribute('aria-hidden','true');emblem.textContent=owned?'◆':'◇';
+    const meta=document.createElement('div');meta.className='relic-meta';
+    const number=document.createElement('span');number.className='relic-number';number.textContent=`TREASURE 0${index+1} / 0${FREE.length}`;
+    const title=document.createElement('h3');title.className='relic-title';title.textContent=owned?item.name:'まだ見ぬ秘宝';
+    const badge=document.createElement('span');badge.className='relic-state';badge.textContent=owned?'✦ 獲得済み':'🔒 未発見';
+    meta.append(number,title,badge);head.append(emblem,meta);li.append(head);
+    if(owned){const voice=voiceControls(item);if(voice)li.append(voice);}
+    else{const hint=document.createElement('p');hint.className='relic-hint';hint.textContent='竜の卵から出会える日をお楽しみに。';li.append(hint);}
+    list.append(li);
+  }
 }
 async function syncState(){
   const sequence=++syncSequence,revision=stateRevision;
