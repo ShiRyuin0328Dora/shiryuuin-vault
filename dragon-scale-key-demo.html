@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>竜鱗の鍵・交換演出サンプル</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#fff2fb;background:#110a20}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 0,#55316b,#1b1031 55%,#10091e)}
+main{max-width:620px;margin:auto;padding:28px 18px 60px}.eyebrow{text-align:center;color:#e8ce9e;font-size:11px;letter-spacing:.18em}h1{text-align:center;font-family:serif;font-size:clamp(27px,8vw,38px);margin:12px 0}.lead{text-align:center;color:#d3c0df;line-height:1.7;font-size:14px}
+.card{border:1px solid #aa83c0;border-radius:22px;margin:22px 0;padding:20px;background:radial-gradient(circle at 88% 0,#a365bd38,transparent 44%),linear-gradient(140deg,#38234c,#211432);box-shadow:inset 0 1px #fff3,0 12px 30px #0c061a80}
+.card h2{margin:0 0 14px;font-size:21px;color:#ffe8b4}.inventory{display:flex;gap:10px;flex-wrap:wrap}.token{flex:1;min-width:125px;border:1px solid #ac82c2;border-radius:15px;background:#180f29;padding:14px;color:#e9d1ee}.token strong{display:block;font-size:25px;color:#fff;margin-top:3px}.hint{font-size:13px;color:#cdbad7;line-height:1.6}button{font:700 15px system-ui;cursor:pointer;border-radius:12px;padding:13px 16px}button:focus-visible{outline:3px solid #fff;outline-offset:3px}.primary{width:100%;border:1px solid #f3d795;background:linear-gradient(110deg,#b6803e,#f7dfa2 50%,#ad7439);color:#3d2542}.primary:disabled{opacity:.48;cursor:not-allowed}.treasures{display:grid;gap:10px}.treasure{width:100%;display:flex;align-items:center;gap:13px;text-align:left;border:1px solid #9c78b3;background:#261738;color:#fff0f9}.treasure:hover{background:#39204f}.treasure .gem{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:12px;background:linear-gradient(135deg,#e9c7ff,#843eb3,#492267);color:#fff;font-size:22px}.treasure strong{display:block;font-size:15px}.treasure small{display:block;color:#cbb6d7;font-size:11px;margin-top:4px}.treasure.ur{border-color:#d3aa71}.treasure.ur .gem{background:linear-gradient(135deg,#fff4bb,#dfab4c,#664227)}.treasure.selected{border-color:#f8dea0;background:#56326b}.note{font-size:12px;color:#bfaeca;line-height:1.6}
+dialog{width:min(90vw,440px);border:1px solid #d7abe7;border-radius:22px;padding:24px;background:radial-gradient(circle at top,#5b3471,#241532 75%);color:#fff3fb;box-shadow:0 18px 65px #000b}dialog::backdrop{background:#080311bd;backdrop-filter:blur(5px)}dialog h2{font-family:serif;color:#ffe6ac;margin:0 0 13px;font-size:22px}dialog p{line-height:1.7;margin:0 0 18px}.choices{display:flex;gap:10px}.choices button{flex:1;border:1px solid #d1a9df;background:#322045;color:#fff}.choices .yes{border-color:#f0d095;background:#e8c889;color:#36213c}.dialog-close{display:block;margin:auto;border:1px solid #cba5df;background:#332044;color:white}
+@media(max-width:420px){.card{padding:16px}.treasure{padding:12px}.choices{flex-direction:column}}
+</style></head><body><main>
+<div class="eyebrow">SHIRYUUIN TREASURY · INTERACTION SAMPLE</div><h1>🔑 竜鱗の鍵</h1>
+<p class="lead">重複から生まれた鱗を集めて、まだ見ぬ秘宝の扉を開こう。</p>
+<section class="card"><h2>🐉 鱗の錬成</h2><div class="inventory"><div class="token">紫竜の鱗<strong><span id="scales">10</span> 枚</strong></div><div class="token">竜鱗の鍵<strong><span id="keys">0</span> 本</strong></div></div><p class="hint">鱗10枚で鍵を1本作れます。鍵を作る前に確認します。</p><button class="primary" id="forge" type="button">鱗10枚で鍵を作る</button></section>
+<section class="card"><h2>💎 鍵で開ける秘宝</h2><p class="hint">鍵1本で、未獲得のN・R・SR・SSRから好きな1つを選べます。URは選べません。</p><div class="treasures" id="treasures"></div></section>
+<p class="note">これは画面と演出の見本です。鱗・鍵・お宝の数は試作用で、ページを閉じるとリセットされます。本物の宝物庫の抽選や保存記録には触れません。</p>
+</main>
+<dialog id="confirm"><h2>✨ 竜鱗の鍵を錬成</h2><p>10枚集まりました。鱗を使って鍵を作りますか？</p><div class="choices"><button class="yes" id="confirmYes" type="button">はい、鍵を作る</button><button id="confirmNo" type="button">いいえ、取っておく</button></div></dialog>
+<dialog id="message"><h2 id="messageTitle"></h2><p id="messageBody"></p><button class="dialog-close" id="messageClose" type="button">閉じる</button></dialog>
+<script>
+const items=[
+ {rank:'N',name:'おやすみなさいませ',icon:'◆'},
+ {rank:'R',name:'お嬢様の朝のご挨拶',icon:'✦'},
+ {rank:'SR',name:'竜神の小さな秘密',icon:'✧'},
+ {rank:'SSR',name:'竜のお嬢様からの特別な祝福',icon:'✦'},
+ {rank:'UR',name:'竜神の至宝',icon:'✶'}
+];
+let scales=10,keys=0,owned=new Set();
+const $=id=>document.getElementById(id);
+const confirmDialog=$('confirm'),messageDialog=$('message');
+function tell(title,body){$('messageTitle').textContent=title;$('messageBody').textContent=body;messageDialog.showModal();}
+function render(){
+ $('scales').textContent=scales;$('keys').textContent=keys;$('forge').disabled=scales<10;
+ const list=$('treasures');list.replaceChildren();
+ for(const [index,item] of items.entries()){
+  const button=document.createElement('button');button.type='button';button.className='treasure'+(item.rank==='UR'?' ur':'')+(owned.has(index)?' selected':'');
+  const gem=document.createElement('span');gem.className='gem';gem.setAttribute('aria-hidden','true');gem.textContent=item.icon;
+  const text=document.createElement('span');const title=document.createElement('strong');title.textContent=item.rank+'｜'+item.name;
+  const status=document.createElement('small');status.textContent=owned.has(index)?'獲得済み':item.rank==='UR'?'特別な封印がかかっています':'未獲得・鍵で交換可能';
+  text.append(title,status);button.append(gem,text);
+  button.addEventListener('click',()=>choose(index));list.append(button);
+ }
+}
+function choose(index){
+ const item=items[index];
+ if(item.rank==='UR'){
+  tell('🔒 こちらは開きませんわ！','こんな事もあろうかと、こちらの宝物には頑丈なロックをかけてありますのよ！ （⚠️ URは鍵で選択できません）');return;
+ }
+ if(owned.has(index)){tell('もう持っていますわ','こちらの秘宝は、すでに図鑑に収めてありますわ。');return;}
+ if(keys<1){tell('鍵が足りませんわ','鱗を10枚集めて、竜鱗の鍵を作ってくださいませ。');return;}
+ keys--;owned.add(index);render();tell('✨ 秘宝を解放！',item.name+' を手に入れましたわ！');
+}
+$('forge').addEventListener('click',()=>{if(scales>=10)confirmDialog.showModal();});
+$('confirmYes').addEventListener('click',()=>{if(scales>=10){scales-=10;keys++;render();confirmDialog.close();tell('🔑 鍵が完成！','竜の鱗が、秘宝を開く鍵になりましたわ！');}else confirmDialog.close();});
+$('confirmNo').addEventListener('click',()=>confirmDialog.close());
+$('messageClose').addEventListener('click',()=>messageDialog.close());
+render();
+</script></body></html>
