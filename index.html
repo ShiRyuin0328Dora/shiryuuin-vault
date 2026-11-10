@@ -19,6 +19,8 @@ a{color:#f1d59b}.pill{display:inline-block;padding:3px 10px;border:1px solid #87
 .home-link{display:inline-block;margin-top:16px;padding:8px 12px;border:1px solid #c6a6d6;border-radius:999px;color:#fff5e4;text-decoration:none;font-size:14px}
 .home-link:focus-visible{outline:3px solid #fff;outline-offset:3px}
 ul{padding-left:20px;line-height:1.9}.notice{font-size:12px;color:#e5c6c6}
+.collection-progress{margin:12px 0 18px;color:#f1d59b;font-weight:700}
+.collection-progress progress{display:block;width:100%;height:12px;margin-top:8px;accent-color:#c690ef}
 footer{text-align:center;margin:30px 0;color:#b6a1c8;font-size:12px}
 #hatchArea{display:none;text-align:center;padding:18px 8px 8px}
 #eggButton{display:block;width:190px;height:210px;margin:0 auto 12px;padding:0;border:0;background:transparent;position:relative;cursor:pointer;filter:drop-shadow(0 8px 20px #b96aff66)}
@@ -152,7 +154,7 @@ button:disabled{box-shadow:none}
 </section>
 <section class="card"><div class="mobile-gems" aria-hidden="true"><i class="jewel gold"><i class="facet"></i></i><i class="jewel blue"><i class="facet"></i></i><i class="jewel rose"><i class="facet"></i></i><i class="spark">✦</i></div><div class="row"><h2>💎 竜の秘宝庫</h2><span class="tag">特典ガチャ</span></div><p class="muted">N・R・SR・SSR・URの5段階。未所持の景品を優先！</p><p class="notice">🔒 本番用のガチャ券は、サーバーで一度だけ使用できる仕組みを準備中です。現在はまだ券の発行・使用はできません。</p><label for="ticketCode" class="muted">専用リンクに含まれるチケット番号（接続準備中）</label><input id="ticketCode" type="text" placeholder="チケット番号を入力" autocomplete="off" style="width:100%;margin-top:8px;padding:13px;background:#180f29;color:#f8ecff;border:1px solid #79558e;border-radius:12px"/><button id="premiumButton" disabled>🔒 特典ガチャ（準備中）</button><p id="ticketInfo" class="muted">現在は安全な抽選機能の実装待ちです。</p></section>
 <section class="card"><h2>✨ 召喚結果</h2><div id="result" aria-live="polite">宝物庫の扉は閉ざされている……</div></section>
-<section class="card"><h2>📜 獲得した秘宝</h2><p class="muted">無料ガチャの音声3種類を再生・保存できます。</p><ul id="collection"></ul></section>
+<section class="card"><h2>📜 獲得した秘宝</h2><p class="muted">無料ガチャの音声3種類を再生・保存できます。</p><div class="collection-progress"><span id="collectionCount" role="status">収集状況を読み込み中…</span><progress id="collectionBar" max="3" value="0" aria-label="無料ボイスの収集状況"></progress></div><ul id="collection"></ul></section>
 <section class="card"><h2>⚠️ 試作版について</h2><p class="notice">この準備版は無料デモのみ端末内で動作します。音声ファイルはURLを知る人が直接アクセスできます。端末やブラウザを変えると抽選記録は共有されません。特典ガチャは安全のため停止中です。チケット番号の入力欄は見た目の準備であり、認証・発行・抽選・引換はできません。公開イベントで使う前に、規約・法令の確認とサーバー側の安全な実装が必要です。</p></section>
 <footer>紫竜院家宝物庫 · v0.9.6 · DESIGN C · MOBILE JEWELS</footer></main>
 <script>
@@ -234,6 +236,9 @@ function voiceControls(item){
 }
 function render(){
   refreshFreeStatus();
+  const collected=FREE.filter(item=>state.owned.includes(item.id)).length;
+  $('collectionCount').textContent=`無料ボイス ${collected} / ${FREE.length} 種類`; 
+  $('collectionBar').max=FREE.length;$('collectionBar').value=collected;
   const list=$('collection');list.replaceChildren();
   if(!state.owned.length){const li=document.createElement('li');li.textContent='まだ秘宝はありません';list.append(li);}
   for(const id of state.owned){const item=FREE.find(x=>x.id===id);if(!item)continue;const li=document.createElement('li');li.textContent=item.rank+'｜'+item.name;const voice=voiceControls(item);if(voice)li.append(voice);list.append(li);}
