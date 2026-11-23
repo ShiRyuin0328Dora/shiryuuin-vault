@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>宝物庫立ち入り許可証｜画面見本</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#f8ecff;background:#130c26}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#6c3989,#291442 48%,#130c26 86%)}
+main{width:min(100%,730px);min-height:100vh;margin:auto;padding:44px clamp(18px,4vw,38px) 70px;background:linear-gradient(120deg,#ffffff06,transparent 60%);border-inline:1px solid #a17aab44}
+.eyebrow{text-align:center;letter-spacing:.24em;font-size:11px;color:#f0d49d;margin:0 0 18px}
+h1{text-align:center;font:700 clamp(30px,6vw,48px)/1.25 Georgia,'Hiragino Mincho ProN',serif;color:#fff6eb;margin:0 0 14px;text-shadow:0 0 20px #d7a0ef77}
+.lead{text-align:center;color:#dfc9e9;line-height:1.7;margin:0 0 30px}
+.card{position:relative;overflow:hidden;padding:clamp(22px,5vw,34px);border-radius:26px;border:1px solid #c49dd6;background:radial-gradient(circle at 88% 8%,#8e4eb348,transparent 44%),linear-gradient(145deg,#432552,#211431);box-shadow:0 20px 45px #08041399,inset 0 1px #fff8}
+.card::after{content:'✦';position:absolute;right:24px;top:9px;font-size:62px;color:#e0b6ef47;pointer-events:none}
+.card-label{font-size:12px;letter-spacing:.22em;color:#e9c988}.card h2{font-size:clamp(20px,4vw,27px);margin:10px 0 20px}
+.seal{width:72px;height:72px;display:grid;place-items:center;border-radius:50%;font-size:36px;background:radial-gradient(circle at 36% 27%,#fff6ca,#d9a95c 55%,#7e4e27);border:2px solid #ffdda1;box-shadow:0 0 28px #e3a96377;margin-bottom:20px}
+.balance{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-block:1px solid #ad84bd99;padding:18px 0;color:#eddbf3}
+.balance strong{font-size:clamp(38px,9vw,60px);line-height:1;color:#ffe6a6}.balance small{font-size:18px}
+.meter{display:flex;gap:8px;margin:17px 0 26px;list-style:none;padding:0}.meter li{flex:1;height:11px;border-radius:99px;background:#584364;border:1px solid #a781b2}.meter li.on{background:linear-gradient(90deg,#bc82e6,#f3d699);box-shadow:0 0 12px #dfabed88}
+button{width:100%;border-radius:15px;padding:17px 18px;font:700 16px system-ui,-apple-system,sans-serif;cursor:pointer}
+button:focus-visible{outline:3px solid #fff;outline-offset:4px}
+#draw{border:1px solid #ffdda1;background:linear-gradient(100deg,#bc8741,#ffe3a3 54%,#b47a37);color:#352039;box-shadow:inset 0 1px #fff9d5,0 6px 18px #170b1e80}
+#draw:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+#reset{border:1px solid #b68bc7;background:transparent;color:#e9d5f1;margin-top:14px}
+.status{min-height:58px;margin-top:21px;line-height:1.65;color:#f5e6fb}
+.egg{font-size:46px;text-align:center;min-height:66px;margin:22px 0 6px;filter:drop-shadow(0 0 16px #d3a1ef)}
+.egg.pop{animation:pop .5s ease-in-out}@keyframes pop{50%{transform:scale(1.25) rotate(-8deg)}100%{transform:scale(1)}}
+.warashi{display:none;margin-top:22px;padding:18px;border-radius:18px;background:#1c102b;border:1px solid #b991cb;text-align:center;font-size:clamp(20px,5vw,26px);line-height:1.5;animation:appear .55s ease-out}
+.warashi.show{display:block}@keyframes appear{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.warashi small{display:block;font-size:13px;color:#d6c3df;margin-top:8px}
+.note{color:#cab5d9;line-height:1.7;font-size:13px;margin:22px 0 0}.note strong{color:#ffe0a1}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important}}
+</style>
+</head>
+<body><main>
+<p class="eyebrow">SHIRYUUIN FAMILY TREASURY · PREVIEW</p>
+<h1>🔑 宝物庫立ち入り許可証</h1>
+<p class="lead">竜の秘宝庫へようこそ。許可証に記された数だけ、卵を割れます。</p>
+<section class="card" aria-label="許可証の画面見本">
+  <div class="seal" aria-hidden="true">🔑</div>
+  <span class="card-label">TREASURY ENTRY PASS · DEMO</span>
+  <h2>あなたの特典ガチャ</h2>
+  <div class="balance"><span>残りの卵</span><strong><span id="remaining">5</span><small> / 5 個</small></strong></div>
+  <ol id="meter" class="meter" aria-label="残りの卵"></ol>
+  <button id="draw" type="button">🥚 卵を１個割る</button>
+  <div class="egg" id="egg" aria-hidden="true">🥚</div>
+  <div class="status" id="status" role="status" aria-live="polite">許可証には卵が５個あります。好きなときに割ってみてね。</div>
+  <div class="warashi" id="warashi" role="status" aria-live="polite">˙𐃷˙＜ﾀﾏｺﾞ ﾅｲﾅｲﾃﾞｽ<small>この許可証は使い切りました。</small></div>
+  <button id="reset" type="button">画面見本を最初から試す</button>
+</section>
+<p class="note"><strong>画面見本です。</strong> 卵・ボイス・ガチャ券の発行や保存は行いません。ここでの回数は画面を閉じると戻ります。実際の特典ガチャはまだ使えません。</p>
+</main>
+<script>
+(() => {
+  const total=5;
+  let remaining=total;
+  const $=id=>document.getElementById(id);
+  function render(){
+    $('remaining').textContent=remaining;
+    $('draw').disabled=remaining===0;
+    $('meter').replaceChildren();
+    for(let i=0;i<total;i++){
+      const mark=document.createElement('li');
+      if(i<remaining)mark.className='on';
+      $('meter').append(mark);
+    }
+    $('meter').setAttribute('aria-label',`残りの卵 ${remaining} / ${total} 個`);
+    $('warashi').classList.toggle('show',remaining===0);
+  }
+  $('draw').addEventListener('click',()=>{
+    if(remaining===0)return;
+    remaining--;
+    $('egg').classList.remove('pop');
+    void $('egg').offsetWidth;
+    $('egg').classList.add('pop');
+    $('egg').textContent='💎';
+    $('status').textContent=remaining===0?'最後の卵を割りました。演出見本の宝石が現れた！':`パリン！ 演出見本の宝石が現れた！ 残り ${remaining} 個。`;
+    render();
+  });
+  $('reset').addEventListener('click',()=>{
+    remaining=total;
+    $('egg').textContent='🥚';
+    $('status').textContent='許可証には卵が５個あります。好きなときに割ってみてね。';
+    render();
+  });
+  render();
+})();
+</script></body></html>
