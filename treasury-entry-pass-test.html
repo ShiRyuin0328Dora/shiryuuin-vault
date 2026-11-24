@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>宝物庫立ち入り許可証 | 接続試験</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#f8ecff;background:#130c26}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#60337d,#231337 60%,#130c26);min-height:100vh}
+main{width:min(100%,720px);margin:auto;padding:40px 18px 70px;min-height:100vh}
+.eyebrow{text-align:center;letter-spacing:.23em;font-size:11px;color:#f0d49d}h1{text-align:center;font:700 clamp(29px,7vw,46px)/1.3 Georgia,serif;color:#fff6eb}
+.lead{text-align:center;color:#dfc9e9;line-height:1.7}.card{margin-top:28px;padding:clamp(22px,5vw,34px);border:1px solid #c49dd6;border-radius:25px;background:linear-gradient(145deg,#432552,#211431);box-shadow:0 18px 42px #08041388}
+h2{font-size:23px}.balance{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-block:1px solid #ad84bd99;padding:18px 0}.balance strong{font-size:clamp(40px,10vw,62px);color:#ffe6a6}
+button{width:100%;margin-top:14px;padding:16px;border:1px solid #ffdda1;border-radius:15px;background:linear-gradient(100deg,#bc8741,#ffe3a3,#b47a37);color:#352039;font:700 16px system-ui;cursor:pointer}
+button.secondary{background:transparent;color:#f1d59b;border-color:#b68bc7}button:disabled{opacity:.45;cursor:not-allowed}button[hidden]{display:none}
+.status{line-height:1.7;padding:16px;border:1px solid #a77cba;border-radius:14px;background:#190e29;margin-top:16px;min-height:60px}
+.warashi{display:none;margin-top:20px;padding:17px;text-align:center;border:1px solid #b991cb;border-radius:16px;background:#1c102b;font-size:clamp(20px,5vw,26px)}
+.warashi.show{display:block}.warashi small{display:block;font-size:13px;color:#d6c3df;margin-top:8px}.note{color:#d2bfdc;line-height:1.7;font-size:13px}
+ol{padding-left:25px;line-height:1.8}a{color:#f1d59b}button:focus-visible,a:focus-visible{outline:3px solid white;outline-offset:4px}
+</style>
+</head>
+<body><main>
+<p class="eyebrow">SHIRYUUIN FAMILY TREASURY · CONNECTION TEST</p>
+<h1>🔑 宝物庫立ち入り許可証</h1>
+<p class="lead">Googleアカウントに許可証を結び付け、残りの卵を確認します。</p>
+<section class="card">
+  <h2>Googleログイン</h2>
+  <p id="authStatus" class="status" role="status">認証状態を確認中……</p>
+  <button id="login" type="button" hidden>Googleでログイン</button>
+  <button id="logout" type="button" class="secondary" hidden>ログアウト</button>
+</section>
+<section class="card">
+  <h2>あなたの特典ガチャ</h2>
+  <div class="balance"><span>残りの卵</span><strong><span id="remaining">—</span><small id="total"></small></strong></div>
+  <p id="passStatus" class="status" role="status" aria-live="polite">許可証を確認中……</p>
+  <button id="claim" type="button" hidden>このGoogleアカウントで受け取る</button>
+  <button id="draw" type="button" disabled>🥚 卵を1個割る</button>
+  <button id="reload" class="secondary" type="button">残りの卵と結果を確認し直す</button>
+  <div id="warashi" class="warashi">˙𐃷˙＜ﾀﾏｺﾞ ﾅｲﾅｲﾃﾞｽ<small>この許可証は使い切りました。</small></div>
+</section>
+<section class="card">
+  <h2>これまでに割った卵</h2>
+  <ol id="history"><li>まだ結果がありません。</li></ol>
+  <p class="note">保存済みの結果を再取得できます。通信が切れた時は、もう一度卵を割る前に「確認し直す」を押してください。</p>
+</section>
+<p class="note">接続試験用です。管理者が景品をすべて登録して ready にした許可証でのみ卵を割れます。今の無料ガチャには触れません。許可証のリンクは他人に転送しないでください。</p>
+</main>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js';
+import {getAuth,GoogleAuthProvider,onAuthStateChanged,signInWithPopup,signOut} from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
+import {getFirestore,doc,getDocFromServer,runTransaction} from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
+const app=initializeApp({apiKey:'AIzaSyDoOXzvQ-0Eg1yOlmzbXjk0ntlZjTtoTKA',authDomain:'shiryuuin-vault.firebaseapp.com',projectId:'shiryuuin-vault',storageBucket:'shiryuuin-vault.firebasestorage.app',messagingSenderId:'410153951418',appId:'1:410153951418:web:e0c8609d0248b87881a283'});
+const auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
+const $=id=>document.getElementById(id);
+const rewardNames={n1:'ごきげんよう！',n2:'おやすみなさいませ',n3:'御姉院シヲン',r1:'お嬢様の朝のご挨拶',r2:'竜のお嬢様、素が出る',r3:'今日もお疲れ様ですわ',sr1:'お嬢様の甘やかし',sr2:'執事への無茶振り',sr3:'竜神の小さな秘密',ssr1:'竜のお嬢様からの特別な祝福',ssr2:'竜神の本気のお叱り',ur1:'竜神の至宝・限定ボイス＋個別リクエスト券'};
+const passId=new URLSearchParams(location.search).get('pass');
+const validId=/^[a-f0-9]{64}$/.test(passId||'');
+const passRef=validId?doc(db,'entryPasses',passId):null;
+let user=null,pass=null,busy=false,epoch=0;
+const message=error=>error?.code==='permission-denied'?'この許可証を開く権限がありません。別のGoogleアカウントで受け取っていないか確認してください。':error?.code==='unavailable'?'通信が不安定です。後で確認し直してください。':'確認できませんでした。通信状態と許可証の設定を確認してください。';
+function display(){
+  $('authStatus').textContent=user?'ログイン中。許可証を確認できます。':'未ログインです。Googleでログインしてください。';
+  $('login').hidden=!!user;$('logout').hidden=!user;
+  $('remaining').textContent=pass?.remaining??'—';
+  $('total').textContent=pass?' / '+pass.total+' 個':'';
+  $('claim').hidden=!user||!pass||pass.ownerUid!==null||busy||pass.ready!==true;
+  $('draw').disabled=!user||!pass||pass.ownerUid!==user.uid||pass.ready!==true||pass.remaining<=0||busy;
+  $('reload').disabled=busy;
+  $('warashi').classList.toggle('show',!!pass&&pass.ownerUid===user?.uid&&pass.remaining===0);
+}
+async function load(){
+  const myEpoch=++epoch;pass=null;$('history').replaceChildren();display();
+  if(!validId){$('passStatus').textContent='専用リンクの許可証番号がありません。配布されたURLから開いてください。';return;}
+  if(!user){$('passStatus').textContent='Googleログイン後に許可証を確認します。';return;}
+  const uid=user.uid;$('passStatus').textContent='許可証を確認しています……';
+  try{
+    const snapshot=await getDocFromServer(passRef);
+    if(myEpoch!==epoch||user?.uid!==uid)return;
+    if(!snapshot.exists()){$('passStatus').textContent='この許可証は見つかりません。';return;}
+    const data=snapshot.data();
+    if(!Number.isInteger(data.total)||!Number.isInteger(data.remaining)||data.total<0||data.remaining<0||data.remaining>data.total){
+      $('passStatus').textContent='許可証の残数を確認できません。管理者に連絡してください。';return;
+    }
+    pass=data;display();
+    $('passStatus').textContent=data.ready!==true?'この許可証は準備中です。':data.ownerUid===null?'このアカウントで受け取れます。':data.remaining===0?'すべての卵を割りました。':'残り '+data.remaining+' 個の卵を割れます。';
+    if(data.ownerUid!==uid)return;
+    const spent=data.total-data.remaining;
+    if(!spent){$('history').innerHTML='<li>まだ結果がありません。</li>';return;}
+    const rows=await Promise.all(Array.from({length:spent},(_,i)=>getDocFromServer(doc(db,'entryPasses',passId,'rewards',String(i+1)))));
+    if(myEpoch!==epoch||user?.uid!==uid)return;
+    const list=$('history');list.replaceChildren();
+    rows.forEach((row,i)=>{
+      const li=document.createElement('li');
+      const rewardId=row.exists()?row.data().rewardId:null;
+      li.textContent=rewardId&&rewardNames[rewardId]?('第'+(i+1)+'回：'+rewardNames[rewardId]):('第'+(i+1)+'回：結果を確認できません。管理者へ連絡してください。');
+      list.append(li);
+    });
+  }catch(error){
+    if(myEpoch!==epoch||user?.uid!==uid)return;
+    $('passStatus').textContent=message(error);
+  }
+}
+async function act(task){
+  if(busy||!user||!passRef)return;
+  busy=true;display();
+  const uid=user.uid;
+  try{await task(uid);if(user?.uid===uid)await load();}
+  catch(error){if(user?.uid===uid){pass=null;$('passStatus').textContent=message(error)+' 残数を確認し直してから操作してください。';}}
+  finally{busy=false;display();}
+}
+$('claim').onclick=()=>act(uid=>runTransaction(db,async tx=>{
+  const snapshot=await tx.get(passRef);
+  if(!snapshot.exists()||snapshot.data().ready!==true)throw new Error('not-ready');
+  const owner=snapshot.data().ownerUid;
+  if(owner!==null&&owner!==uid)throw new Error('claimed');
+  if(owner===null)tx.update(passRef,{ownerUid:uid});
+}));
+$('draw').onclick=()=>act(uid=>runTransaction(db,async tx=>{
+  const snapshot=await tx.get(passRef);
+  if(!snapshot.exists()||snapshot.data().ready!==true||snapshot.data().ownerUid!==uid||snapshot.data().remaining<=0)throw new Error('unavailable-pass');
+  tx.update(passRef,{remaining:snapshot.data().remaining-1});
+}));
+$('reload').onclick=load;
+$('login').onclick=async()=>{try{await signInWithPopup(auth,provider);}catch(error){$('authStatus').textContent=message(error);}};
+$('logout').onclick=async()=>{try{await signOut(auth);}catch(error){$('authStatus').textContent=message(error);}};
+onAuthStateChanged(auth,value=>{user=value;pass=null;++epoch;display();load();},error=>{$('authStatus').textContent=message(error);});
+display();
+</script></body></html>
