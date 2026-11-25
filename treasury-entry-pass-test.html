@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>宝物庫立ち入り許可証 | 接続試験</title>
+<title>宝物庫立ち入り許可証</title>
 <style>
 :root{font-family:system-ui,-apple-system,sans-serif;color:#f8ecff;background:#130c26}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#60337d,#231337 60%,#130c26);min-height:100vh}
@@ -16,14 +16,14 @@ button{width:100%;margin-top:14px;padding:16px;border:1px solid #ffdda1;border-r
 button.secondary{background:transparent;color:#f1d59b;border-color:#b68bc7}button:disabled{opacity:.45;cursor:not-allowed}button[hidden]{display:none}
 .status{line-height:1.7;padding:16px;border:1px solid #a77cba;border-radius:14px;background:#190e29;margin-top:16px;min-height:60px}
 .warashi{display:none;margin-top:20px;padding:17px;text-align:center;border:1px solid #b991cb;border-radius:16px;background:#1c102b;font-size:clamp(20px,5vw,26px)}
-.warashi.show{display:block}.warashi small{display:block;font-size:13px;color:#d6c3df;margin-top:8px}.note{color:#d2bfdc;line-height:1.7;font-size:13px}
+.warashi.show{display:block}.warashi small{display:block;font-size:15px;line-height:1.7;color:#d6c3df;margin-top:8px}.note{color:#d2bfdc;line-height:1.7;font-size:13px}
 ol{padding-left:25px;line-height:1.8}a{color:#f1d59b}button:focus-visible,a:focus-visible{outline:3px solid white;outline-offset:4px}
 </style>
 </head>
 <body><main>
-<p class="eyebrow">SHIRYUUIN FAMILY TREASURY · CONNECTION TEST</p>
+<p class="eyebrow">SHIRYUUIN FAMILY TREASURY · ENTRY PASS</p>
 <h1>🔑 宝物庫立ち入り許可証</h1>
-<p class="lead">Googleアカウントに許可証を結び付け、残りの卵を確認します。</p>
+<p class="lead">イベント特典の卵を受け取って、宝物庫で割りましょう。</p>
 <section class="card">
   <h2>Googleログイン</h2>
   <p id="authStatus" class="status" role="status">認証状態を確認中……</p>
@@ -37,14 +37,14 @@ ol{padding-left:25px;line-height:1.8}a{color:#f1d59b}button:focus-visible,a:focu
   <button id="claim" type="button" hidden>このGoogleアカウントで受け取る</button>
   <button id="draw" type="button" disabled>🥚 卵を1個割る</button>
   <button id="reload" class="secondary" type="button">残りの卵と結果を確認し直す</button>
-  <div id="warashi" class="warashi">˙𐃷˙＜ﾀﾏｺﾞ ﾅｲﾅｲﾃﾞｽ<small>この許可証は使い切りました。</small></div>
+  <div id="warashi" class="warashi">˙𐃷˙＜ﾀﾏｺﾞ ﾅｲﾅｲﾃﾞｽ<small>イベントに参加してくれてありがとう！<br>また一緒に遊んでね˙𐃷˙</small></div>
 </section>
 <section class="card">
   <h2>これまでに割った卵</h2>
   <ol id="history"><li>まだ結果がありません。</li></ol>
   <p class="note">保存済みの結果を再取得できます。通信が切れた時は、もう一度卵を割る前に「確認し直す」を押してください。</p>
 </section>
-<p class="note">接続試験用です。管理者が景品をすべて登録して ready にした許可証でのみ卵を割れます。今の無料ガチャには触れません。許可証のリンクは他人に転送しないでください。</p>
+<p class="note">許可証の専用リンクは、受け取るご本人のためのものです。他の人に転送しないでください。</p>
 </main>
 <script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js';
@@ -53,6 +53,7 @@ import {getFirestore,doc,getDocFromServer,runTransaction} from 'https://www.gsta
 const app=initializeApp({apiKey:'AIzaSyDoOXzvQ-0Eg1yOlmzbXjk0ntlZjTtoTKA',authDomain:'shiryuuin-vault.firebaseapp.com',projectId:'shiryuuin-vault',storageBucket:'shiryuuin-vault.firebasestorage.app',messagingSenderId:'410153951418',appId:'1:410153951418:web:e0c8609d0248b87881a283'});
 const auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
 const $=id=>document.getElementById(id);
+const rewardNames={n1:'ごきげんよう！',n2:'おやすみなさいませ',n3:'御姉院シヲン',r1:'お嬢様の朝のご挨拶',r2:'竜のお嬢様、素が出る',r3:'今日もお疲れ様ですわ',sr1:'お嬢様の甘やかし',sr2:'執事への無茶振り',sr3:'竜神の小さな秘密',ssr1:'竜のお嬢様からの特別な祝福',ssr2:'竜神の本気のお叱り',ur1:'竜神の至宝・限定ボイス＋個別リクエスト券'};
 const passId=new URLSearchParams(location.search).get('pass');
 const validId=/^[a-f0-9]{64}$/.test(passId||'');
 const passRef=validId?doc(db,'entryPasses',passId):null;
@@ -91,7 +92,8 @@ async function load(){
     const list=$('history');list.replaceChildren();
     rows.forEach((row,i)=>{
       const li=document.createElement('li');
-      li.textContent=row.exists()?('第'+(i+1)+'回：'+String(row.data().rewardId||'結果を確認してください')):('第'+(i+1)+'回：結果が見つかりません。管理者へ連絡してください。');
+      const rewardId=row.exists()?row.data().rewardId:null;
+      li.textContent=rewardId&&rewardNames[rewardId]?('第'+(i+1)+'回：'+rewardNames[rewardId]):('第'+(i+1)+'回：結果を確認できません。管理者へ連絡してください。');
       list.append(li);
     });
   }catch(error){
