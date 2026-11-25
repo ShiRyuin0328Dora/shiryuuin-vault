@@ -42,12 +42,12 @@ footer{text-align:center;margin:30px 0;color:#b6a1c8;font-size:12px}
 .egg-mark{position:absolute;top:32%;left:43%;z-index:4;font-size:35px;color:#f5d58f;text-shadow:0 0 14px #f3dcad;pointer-events:none}
 .egg-shine{position:absolute;top:19%;left:23%;z-index:4;width:20px;height:35px;border-radius:50%;background:#ffffff55;transform:rotate(28deg);pointer-events:none}
 #eggButton.shake{animation:shake .65s ease-in-out 2}
-#eggButton.crack .egg-top{animation:lidOpen .8s cubic-bezier(.2,.7,.2,1) forwards}
-#eggButton.crack .egg-mark,#eggButton.crack .egg-shine{animation:markLeave .8s forwards}
+#eggButton.crack .egg-top{animation:lidOpen .9s cubic-bezier(.22,.72,.25,1) both}
+#eggButton.crack .egg-mark,#eggButton.crack .egg-shine{animation:markLeave .9s ease-out both}
 #eggButton.hatched .egg-top{transform:translate(33px,-65px) rotate(35deg);opacity:.85}
 #eggButton.hatched .egg-mark,#eggButton.hatched .egg-shine{opacity:0}
-@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg)}40%{transform:rotate(7deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}}
-@keyframes lidOpen{0%{transform:translate(0,0) rotate(0)}60%{transform:translate(28px,-55px) rotate(28deg)}100%{transform:translate(33px,-65px) rotate(35deg)}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-4deg)}40%{transform:rotate(5deg)}60%{transform:rotate(-3deg)}80%{transform:rotate(2deg)}}
+@keyframes lidOpen{0%{transform:translate(0,0) rotate(0);opacity:1}25%{transform:translate(3px,-5px) rotate(3deg)}70%{transform:translate(27px,-54px) rotate(29deg)}100%{transform:translate(33px,-65px) rotate(35deg);opacity:.85}}
 @keyframes markLeave{to{opacity:0;transform:translate(25px,-50px)}}
 #hatchGem{font-size:72px;display:none;position:relative;z-index:5;margin:-115px auto 55px;width:120px;animation:gemBounce 1s both;filter:drop-shadow(0 0 16px #d8a3ff);pointer-events:none}
 @keyframes gemBounce{0%{opacity:0;transform:translateY(55px) scale(.3)}45%{opacity:1;transform:translateY(-28px) scale(1.12)}70%{transform:translateY(7px) scale(.91)}85%{transform:translateY(-9px) scale(1.05)}100%{opacity:1;transform:translateY(0) scale(1)}}
@@ -131,11 +131,17 @@ button:disabled{box-shadow:none}
  color:#f5d58f;font-size:36px;text-shadow:0 0 14px #f3dcad}
 #eggButton.mode-v07 .egg-v07:after{content:"";position:absolute;top:16%;left:20%;
  width:24px;height:40px;border-radius:50%;background:#ffffff55;transform:rotate(28deg)}
+#eggButton.mode-v07 .egg-fracture{position:absolute;inset:0;border-radius:inherit;
+ background:linear-gradient(115deg,transparent 43%,#fff0c2 47%,#fff0c2 49%,transparent 53%);
+ opacity:0;transform:scaleY(.1);transform-origin:50% 55%;pointer-events:none}
 #eggButton.mode-v07 .egg-shell{display:none}
 #eggButton.mode-v08 .egg-v07{display:none}
-#eggButton.mode-v07.crack .egg-v07{background:linear-gradient(115deg,#a45bd2 0 45%,#f6dfb5 46% 48%,#7232a6 49% 100%);animation:flash-v07 .7s}
-#eggButton.mode-v07.hatched{animation:pop-v07 .45s forwards}
-@keyframes flash-v07{50%{filter:brightness(2.5)}}
+#eggButton.mode-v07.crack .egg-v07{animation:flash-v07 .75s ease-in-out both}
+#eggButton.mode-v07.crack .egg-fracture{animation:fracture-v07 .75s ease-out both}
+#eggButton.mode-v07.hatched{animation:pop-v07 .5s ease-in forwards}
+#eggButton.mode-v07.hatched .egg-fracture{opacity:1;transform:scaleY(1)}
+@keyframes flash-v07{0%{filter:brightness(1)}55%{filter:brightness(1.8)}100%{filter:brightness(1)}}
+@keyframes fracture-v07{0%{opacity:0;transform:scaleY(.1)}45%{opacity:.9;transform:scaleY(.8)}100%{opacity:1;transform:scaleY(1)}}
 @keyframes pop-v07{to{opacity:0;transform:scale(1.6)}}
 #hatchGem.mode-v07{margin:0 auto;width:auto;animation:appear-v07 .7s both}
 @keyframes appear-v07{from{opacity:0;transform:translateY(25px) scale(.5)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -162,7 +168,7 @@ button:disabled{box-shadow:none}
 <header><div class="eyebrow">SHIRYUUIN FAMILY TREASURY</div><h1>🐉 紫竜院家宝物庫</h1><p class="muted">竜のお嬢様が贈る、秘密の音声収蔵庫</p><span class="pill">🔑 Googleアカウントで記録を共有</span><br><a class="home-link" href="./home-gem-top.html">← ホームページに戻る</a></header>
 <section class="card"><h2>🔑 Googleログイン</h2><p id="loginStatus" class="muted" role="status">ログイン状態を確認中…</p><button id="loginButton" type="button">Googleでログイン</button><button id="logoutButton" class="secondary" type="button" hidden>ログアウト</button><p class="notice">以前の宝物庫で獲得した無料ボイスは、<a href="./vault-legacy-import-preview.html">引き継ぎページ</a>で確認して追加できます。端末内の元の記録は削除しません。</p></section>
 <section class="card"><div class="mobile-gems" aria-hidden="true"><i class="jewel gold"><i class="facet"></i></i><i class="jewel blue"><i class="facet"></i></i><i class="jewel rose"><i class="facet"></i></i><i class="spark">✦</i></div><div class="row"><h2>🎁 一般宝物庫</h2><span class="tag">無料・1日1回</span></div><p class="muted">竜の卵から秘宝を生み出そう！</p><div id="freeStatus" class="muted">本日の抽選状況を読み込み中…</div><button id="freeButton" disabled>無料ガチャを引く</button><p id="storageMessage" class="notice" role="status"></p><button id="retryStorage" class="secondary" type="button" hidden>共有記録を再確認する</button><button id="practiceButton" class="secondary" type="button">🥚 孵化演出を練習する（何度でも）</button><p class="muted">練習モードは抽選回数・獲得記録を変更しません。</p>
-<div id="hatchArea" aria-live="polite"><p id="hatchMessage">卵をタップして孵化させよう！</p><button id="eggButton" type="button" aria-label="竜の卵をタップして孵化させる"><span class="egg-v07" aria-hidden="true"></span><span class="egg-shell"><span class="egg-half egg-bottom"></span><span class="egg-half egg-top"></span><span class="egg-mark">✦</span><span class="egg-shine"></span></span></button><div id="hatchGem" aria-hidden="true">💎</div><div id="hatchReward"></div></div>
+<div id="hatchArea" aria-live="polite"><p id="hatchMessage">卵をタップして孵化させよう！</p><button id="eggButton" type="button" aria-label="竜の卵をタップして孵化させる"><span class="egg-v07" aria-hidden="true"><span class="egg-fracture"></span></span><span class="egg-shell"><span class="egg-half egg-bottom"></span><span class="egg-half egg-top"></span><span class="egg-mark">✦</span><span class="egg-shine"></span></span></button><div id="hatchGem" aria-hidden="true">💎</div><div id="hatchReward"></div></div>
 </section>
 <section class="card"><div class="mobile-gems" aria-hidden="true"><i class="jewel gold"><i class="facet"></i></i><i class="jewel blue"><i class="facet"></i></i><i class="jewel rose"><i class="facet"></i></i><i class="spark">✦</i></div><div class="row"><h2>💎 竜の秘宝庫</h2><span class="tag">特典ガチャ</span></div><p class="muted">N・R・SR・SSR・URの5段階。未所持の景品を優先！</p><p class="notice">🔒 本番用のガチャ券は、サーバーで一度だけ使用できる仕組みを準備中です。現在はまだ券の発行・使用はできません。</p><label for="ticketCode" class="muted">専用リンクに含まれるチケット番号（接続準備中）</label><input id="ticketCode" type="text" placeholder="チケット番号を入力" autocomplete="off" style="width:100%;margin-top:8px;padding:13px;background:#180f29;color:#f8ecff;border:1px solid #79558e;border-radius:12px"/><button id="premiumButton" disabled>🔒 特典ガチャ（準備中）</button><p id="ticketInfo" class="muted">現在は安全な抽選機能の実装待ちです。</p></section>
 <section class="card"><h2>✨ 召喚結果</h2><div id="result" aria-live="polite">宝物庫の扉は閉ざされている……</div></section>
@@ -315,10 +321,10 @@ $('eggButton').onclick=async()=>{
   pending=null;
   try{
     egg.className='mode-'+hatchStyle+' shake';$('hatchMessage').textContent='卵が震えている……！';await wait(1300);
-    egg.className='mode-'+hatchStyle+' crack';$('hatchMessage').textContent='ピシッ……！';await wait(700);
+    egg.className='mode-'+hatchStyle+' crack';$('hatchMessage').textContent='ピシッ……！';await wait(hatchStyle==='v07'?750:900);
     egg.className='mode-'+hatchStyle+' hatched';
     $('hatchMessage').textContent=hatchStyle==='v07'?'パリン！ 秘宝が生まれた！':'ぱかっ！ 秘宝が生まれた！';
-    if(hatchStyle==='v07'){await wait(450);egg.style.display='none';$('hatchGem').className='mode-v07';}
+    if(hatchStyle==='v07'){await wait(500);egg.style.display='none';$('hatchGem').className='mode-v07';}
     $('hatchGem').style.display='block';await wait(hatchStyle==='v07'?700:1000);
     const reward=$('hatchReward');reward.replaceChildren();
     const title=document.createElement('strong');title.textContent='💜 '+item.name;
