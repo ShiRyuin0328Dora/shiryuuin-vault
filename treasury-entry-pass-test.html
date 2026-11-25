@@ -16,7 +16,7 @@ button{width:100%;margin-top:14px;padding:16px;border:1px solid #ffdda1;border-r
 button.secondary{background:transparent;color:#f1d59b;border-color:#b68bc7}button:disabled{opacity:.45;cursor:not-allowed}button[hidden]{display:none}
 .status{line-height:1.7;padding:16px;border:1px solid #a77cba;border-radius:14px;background:#190e29;margin-top:16px;min-height:60px}
 .warashi{display:none;margin-top:20px;padding:17px;text-align:center;border:1px solid #b991cb;border-radius:16px;background:#1c102b;font-size:clamp(20px,5vw,26px)}
-.warashi.show{display:block}.warashi small{display:block;font-size:15px;line-height:1.7;color:#d6c3df;margin-top:8px}.note{color:#d2bfdc;line-height:1.7;font-size:13px}
+.warashi.show{display:block}.warashi small{display:block;font-size:13px;color:#d6c3df;margin-top:8px}.note{color:#d2bfdc;line-height:1.7;font-size:13px}
 ol{padding-left:25px;line-height:1.8}a{color:#f1d59b}button:focus-visible,a:focus-visible{outline:3px solid white;outline-offset:4px}
 </style>
 </head>
@@ -37,7 +37,7 @@ ol{padding-left:25px;line-height:1.8}a{color:#f1d59b}button:focus-visible,a:focu
   <button id="claim" type="button" hidden>このGoogleアカウントで受け取る</button>
   <button id="draw" type="button" disabled>🥚 卵を1個割る</button>
   <button id="reload" class="secondary" type="button">残りの卵と結果を確認し直す</button>
-  <div id="warashi" class="warashi">˙𐃷˙＜ﾀﾏｺﾞ ﾅｲﾅｲﾃﾞｽ<small>イベントに参加してくれてありがとう！<br>また一緒に遊んでね˙𐃷˙</small></div>
+  <div id="warashi" class="warashi">˙𐃷˙＜ﾀﾏｺﾞ ﾅｲﾅｲﾃﾞｽ<small>この許可証は使い切りました。</small></div>
 </section>
 <section class="card">
   <h2>これまでに割った卵</h2>
@@ -53,7 +53,6 @@ import {getFirestore,doc,getDocFromServer,runTransaction} from 'https://www.gsta
 const app=initializeApp({apiKey:'AIzaSyDoOXzvQ-0Eg1yOlmzbXjk0ntlZjTtoTKA',authDomain:'shiryuuin-vault.firebaseapp.com',projectId:'shiryuuin-vault',storageBucket:'shiryuuin-vault.firebasestorage.app',messagingSenderId:'410153951418',appId:'1:410153951418:web:e0c8609d0248b87881a283'});
 const auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
 const $=id=>document.getElementById(id);
-const rewardNames={n1:'ごきげんよう！',n2:'おやすみなさいませ',n3:'御姉院シヲン',r1:'お嬢様の朝のご挨拶',r2:'竜のお嬢様、素が出る',r3:'今日もお疲れ様ですわ',sr1:'お嬢様の甘やかし',sr2:'執事への無茶振り',sr3:'竜神の小さな秘密',ssr1:'竜のお嬢様からの特別な祝福',ssr2:'竜神の本気のお叱り',ur1:'竜神の至宝・限定ボイス＋個別リクエスト券'};
 const passId=new URLSearchParams(location.search).get('pass');
 const validId=/^[a-f0-9]{64}$/.test(passId||'');
 const passRef=validId?doc(db,'entryPasses',passId):null;
@@ -92,8 +91,7 @@ async function load(){
     const list=$('history');list.replaceChildren();
     rows.forEach((row,i)=>{
       const li=document.createElement('li');
-      const rewardId=row.exists()?row.data().rewardId:null;
-      li.textContent=rewardId&&rewardNames[rewardId]?('第'+(i+1)+'回：'+rewardNames[rewardId]):('第'+(i+1)+'回：結果を確認できません。管理者へ連絡してください。');
+      li.textContent=row.exists()?('第'+(i+1)+'回：'+String(row.data().rewardId||'結果を確認してください')):('第'+(i+1)+'回：結果が見つかりません。管理者へ連絡してください。');
       list.append(li);
     });
   }catch(error){
