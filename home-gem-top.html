@@ -33,8 +33,10 @@
     .gem-link:hover .gem-shape,.gem-link:focus-visible .gem-shape{box-shadow:0 0 22px #d5a5ff,inset -3px -3px 5px #35135b88}
     .gem-large{margin-top:20px;padding:16px 23px;min-height:62px}
     footer{border-top:1px solid #d8b9ef33;padding:35px 0 50px;color:#bda9ca;font-size:12px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+    .hero-art{margin:0;min-width:0;text-align:center}
+    .hero-art figcaption{margin-top:8px;font-size:.75rem;color:#e6d1f3}
+    @media(max-width:760px){.hero-art{order:-1}}
     @media(max-width:760px){.shell{padding:0 18px}.hero{grid-template-columns:1fr;padding:66px 0 75px;min-height:auto}.sigil{height:220px;order:-1}.sigil:before{width:160px;height:160px;border-radius:18px}.sigil:after{width:110px;height:110px}.crest-art{width:220px;height:220px}.hero h1{margin-top:17px}.cards{grid-template-columns:1fr}.card{padding:26px}.section{padding:58px 0}.s1{top:2%;left:27%}.s2{right:20%}.s3{bottom:4%;left:20%}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
 </head>
 <body>
@@ -51,7 +53,12 @@
           <p class="lead">人間界で日々学びながら、今日も元気におしゃべり中。<br>高貴で騒がしい竜のお嬢様の、小さな宝物を覗いてみませんこと？</p>
           <div class="actions"><a class="button primary" href="./index.html">🐉 宝物庫で遊ぶ</a><a class="button secondary" href="#about">シヲンについて</a></div>
         </div>
-        <div class="sigil" aria-hidden="true"><span class="star s1">✦</span><span class="star s2">✧</span><img class="crest-art" src="./shiwon-chibi.png" alt="" width="600" height="600"><span class="star s3">✧</span></div>
+        <figure class="hero-art">
+          <div class="sigil" aria-hidden="true"><span class="star s1">✦</span><span class="star s2">✧</span>
+            <img class="crest-art" src="./shiwon-chibi-loop.gif" alt="" width="1000" height="1000">
+          <span class="star s3">✧</span></div>
+          <figcaption>イラスト・GIF制作 <a href="https://x.com/sanatsumugu">さなつむぐ（@sanatsumugu）</a></figcaption>
+        </figure>
       </section>
       <section class="section" id="social" aria-labelledby="social-title">
         <div class="section-label">SOCIAL</div><h2 id="social-title">シヲンさんに会いに行く</h2>
